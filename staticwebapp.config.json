@@ -1,0 +1,12 @@
+{
+  "routes": [
+    {
+      "route": "/api/*",
+      "methods": ["POST", "PATCH", "DELETE"],
+      "rewrite": "/api/{path}"
+    }
+  ],
+  "platform": {
+    "apiRuntime": "node:20"
+  }
+}
