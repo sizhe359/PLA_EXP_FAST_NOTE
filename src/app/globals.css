@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f4f7f5;
+  --foreground: #173126;
+  --card: #ffffff;
+  --muted: #66756d;
+  --border: #d8e2dc;
+  --primary: #087a55;
+  --primary-foreground: #ffffff;
+  --danger: #b42318;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-danger: var(--danger);
+  --font-sans: "Geist", "Geist Fallback", "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono", "Geist Mono Fallback", ui-monospace, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: "Geist", "Geist Fallback", "Microsoft YaHei", sans-serif;
+  margin: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button,
+a,
+input,
+select {
+  min-height: 44px;
+}
+
+input,
+select,
+textarea {
+  font-size: 16px;
+}
+
+::selection {
+  background: #bce8d5;
+}
