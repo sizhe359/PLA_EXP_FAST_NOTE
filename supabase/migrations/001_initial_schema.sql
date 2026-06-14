@@ -104,7 +104,7 @@ create policy "users delete own experiments"
 
 create policy "users manage own samples"
   on public.experiment_samples for all
-  using (auth.uid() = user_id);
+  using (auth.uid() = user_id)
   with check (auth.uid() = user_id);
 
 create policy "users manage own sample measurements"
