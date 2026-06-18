@@ -116,6 +116,14 @@ create index if not exists weights_measurement_replicate_idx
   on replicate_weights (measurement_id, replicate);
 `;
 
+function runInCurrentTransaction(
+  db: SQLiteDBConnection,
+  statement: string,
+  values?: unknown[],
+) {
+  return db.run(statement, values, false);
+}
+
 function loadFallback() {
   const stored = localStorage.getItem(FALLBACK_KEY);
   return stored ? (JSON.parse(stored) as AndroidExperiment[]) : [];
@@ -232,7 +240,8 @@ export async function saveExperiment(
 
   await db.beginTransaction();
   try {
-    await db.run(
+    await runInCurrentTransaction(
+      db,
       `insert into experiments (
         id, remote_id, title, experiment_date, sample_name, batch_number, notes,
         status, template_snapshot_json, field_values_json, calculation_results_json,
@@ -273,14 +282,18 @@ export async function saveExperiment(
         saved.updatedAt ?? saved.localUpdatedAt,
       ],
     );
-    await db.run("delete from experiment_samples where experiment_id = ?", [saved.id]);
+    await runInCurrentTransaction(db, "delete from experiment_samples where experiment_id = ?", [
+      saved.id,
+    ]);
     for (const sample of saved.samples) {
-      await db.run(
+      await runInCurrentTransaction(
+        db,
         "insert into experiment_samples (id, experiment_id, name, position) values (?, ?, ?, ?)",
         [sample.id, saved.id, sample.name, sample.position],
       );
       for (const measurement of sample.measurements) {
-        await db.run(
+        await runInCurrentTransaction(
+          db,
           `insert into sample_measurements
             (id, sample_id, experiment_id, measured_at, position)
            values (?, ?, ?, ?, ?)`,
@@ -293,7 +306,8 @@ export async function saveExperiment(
           ],
         );
         for (const weight of measurement.replicateWeights) {
-          await db.run(
+          await runInCurrentTransaction(
+            db,
             `insert into replicate_weights
               (id, measurement_id, experiment_id, replicate, weight_mg)
              values (?, ?, ?, ?, ?)`,
