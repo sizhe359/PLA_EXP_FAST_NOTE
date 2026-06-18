@@ -1,0 +1,15 @@
+@import "../../src/app/globals.css";
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  overscroll-behavior-y: contain;
+}
+
+.safe-bottom {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}

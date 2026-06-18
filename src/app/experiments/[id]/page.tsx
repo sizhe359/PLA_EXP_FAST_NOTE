@@ -1,30 +1,8 @@
 import { notFound, redirect } from "next/navigation";
 import { ExperimentEditor } from "@/components/experiment-editor";
-import { DEFAULT_TEMPLATE } from "@/lib/templates";
-import type { Experiment } from "@/lib/types";
-import { createId } from "@/lib/utils";
+import { createEmptyExperiment } from "@/lib/experiments";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
-
-function emptyExperiment(): Experiment {
-  return {
-    title: "新实验",
-    experimentDate: new Date().toISOString().slice(0, 10),
-    sampleName: "",
-    batchNumber: "",
-    notes: "",
-    status: "active",
-    templateSnapshot: DEFAULT_TEMPLATE,
-    fieldValues: {},
-    calculationResults: {},
-    samples: ["样品 A", "样品 B", "样品 C"].map((name, position) => ({
-      id: createId(),
-      name,
-      position,
-      measurements: [],
-    })),
-  };
-}
 
 export default async function ExperimentPage({
   params,
@@ -33,7 +11,7 @@ export default async function ExperimentPage({
 }) {
   const { id } = await params;
   const configured = isSupabaseConfigured();
-  let experiment = emptyExperiment();
+  let experiment = createEmptyExperiment();
 
   if (configured) {
     const supabase = await getSupabaseServerClient();

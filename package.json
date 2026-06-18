@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "android:dev": "vite --config android-app/vite.config.ts --host 0.0.0.0",
+    "android:build": "vite build --config android-app/vite.config.ts",
+    "android:sync": "npm run android:build && cap sync android",
+    "android:apk": "npm run android:sync && cd android && gradlew assembleDebug",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -11,8 +15,13 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "@capacitor-community/sqlite": "^8.1.0",
+    "@capacitor/android": "^8.4.0",
+    "@capacitor/cli": "^8.4.0",
+    "@capacitor/core": "^8.4.0",
     "@supabase/ssr": "^0.12.0",
     "@supabase/supabase-js": "^2.108.1",
+    "@vitejs/plugin-react": "^6.0.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "echarts": "^6.1.0",
@@ -22,7 +31,9 @@
     "next": "16.2.9",
     "react": "19.2.4",
     "react-dom": "19.2.4",
+    "react-router-dom": "^7.17.0",
     "tailwind-merge": "^3.6.0",
+    "vite": "^8.0.16",
     "zod": "^4.4.3"
   },
   "devDependencies": {
